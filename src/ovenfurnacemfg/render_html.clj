@@ -374,7 +374,13 @@
             (str/join "\n" (map gate-row (sorted-ops governor/allowed-ops))))
 
      (table "Human approval trail"
-            "Lifted off the real <code>:audit</code> channel of the resumed actor runs. <code>interrupt-before #{:request-approval}</code> paused each of these mid-graph and handed the decision to a human; the approval then commits as a <code>:committed</code> ledger fact."
+            (str "Lifted off the real <code>:audit</code> channel of the resumed actor runs. "
+                 "<code>interrupt-before #{:request-approval}</code> paused each of these mid-graph and handed the decision to a human; the approval then commits as a <code>:committed</code> ledger fact. "
+                 "<strong>Approved by</strong> is joined back from the <code>:approval-granted</code> audit fact, and that is the only place it exists: "
+                 "<code>ovenfurnacemfg.operation</code>'s <code>:request-approval</code> node attaches <code>:approved-by</code> under the record's <code>:payload</code> key, "
+                 "but <code>ovenfurnacemfg.store/commit-record!</code> destructures <code>:value</code> and never reads <code>:payload</code>, "
+                 "so <em>approver attribution never reaches the SSoT</em> — the committed <code>mnt-1</code> / <code>ship-1</code> / <code>concern-1</code> records below carry no approver field. "
+                 "The audit trail knows who approved; the record does not.")
             ["Thread" "Op" "Subject" "Escalation reason" "Phase" "Confidence" "Approved by"]
             (str/join "\n" (map approval-row approvals)))
 
