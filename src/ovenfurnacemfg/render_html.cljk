@@ -6,7 +6,7 @@
   stack (`ovenfurnacemfg.operation` -> `ovenfurnacemfg.governor` ->
   `ovenfurnacemfg.store`) through `langgraph.graph/run*`, using the
   scenario this repo's OWN demo driver (`ovenfurnacemfg.sim`,
-  `clojure -M:dev:run`) already exercises -- confirmed BEFORE writing
+  `kbb -M:dev:run`) already exercises -- confirmed BEFORE writing
   this file to produce a real ledger of 4 commits and 11 HARD governor
   holds against the real seeded ids (`batch-001`..`batch-003`,
   `fab-001`, `bench-002`).
@@ -25,7 +25,7 @@
   store listing is already `sort-by :id`, the ledger is an append-only
   vector). Two consecutive runs are byte-identical.
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [jp-go-dds.skin]
             [kotoba.lang.text :as str]
@@ -338,7 +338,7 @@
 
      "  <section class=\"card\">\n"
      "    <h2>This run</h2>\n"
-     "    <p class=\"muted\">Generated at build time by <code>ovenfurnacemfg.render-html</code> (<code>clojure -M:dev:render-html</code>), by driving <code>ovenfurnacemfg.operation</code> → <code>ovenfurnacemfg.governor</code> → <code>ovenfurnacemfg.store</code> through <code>langgraph.graph/run*</code>. Every value below was read back out of the store or off the governor's own audit facts after the run — nothing on this page is hand-written domain content.</p>\n"
+     "    <p class=\"muted\">Generated at build time by <code>ovenfurnacemfg.render-html</code> (<code>kbb -M:dev:render-html</code>), by driving <code>ovenfurnacemfg.operation</code> → <code>ovenfurnacemfg.governor</code> → <code>ovenfurnacemfg.store</code> through <code>langgraph.graph/run*</code>. Every value below was read back out of the store or off the governor's own audit facts after the run — nothing on this page is hand-written domain content.</p>\n"
      "    <table>\n"
      "      <thead><tr><th>Ledger facts</th><th>Committed</th><th>HARD governor holds</th><th>Human approvals granted</th></tr></thead>\n"
      "      <tbody>\n"
