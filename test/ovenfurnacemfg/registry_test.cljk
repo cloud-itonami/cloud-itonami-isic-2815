@@ -1,5 +1,5 @@
 (ns ovenfurnacemfg.registry-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [ovenfurnacemfg.registry :as r]))
 
 ;; ----------------------------- equipment-verified? / equipment-registered? / equipment-ready? -----------------------------
