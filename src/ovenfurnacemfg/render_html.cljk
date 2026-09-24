@@ -27,7 +27,7 @@
 
   Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
-  (:require [jp-go-dds.skin]
+  (:require [kotoba.io :as kio] [jp-go-dds.skin]
             [kotoba.lang.text :as str]
             [ovenfurnacemfg.store :as store]
             [ovenfurnacemfg.governor :as governor]
@@ -422,8 +422,8 @@
       (throw (ex-info "no :governor-hold fact on the ledger — refusing to write a console that shows no real hold"
                       {:ledger-facts (count (store/ledger db))})))
     (let [html (render db approvals)
-          f (java.io.File. ^String out)]
-      (when-let [parent (.getParentFile f)] (.mkdirs parent))
+          f (kio/file ^String out)]
+      (when-let [parent (kio/parent-file f)] (kio/mkdirs parent))
       (spit f html :encoding "UTF-8")
       (println "wrote" out "(" (count (store/ledger db)) "ledger facts,"
                (count hs) "HARD governor holds,"
