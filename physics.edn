@@ -1,0 +1,32 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README: the ISIC 2815 plant fabricates, assembles and thermal-tests
+;; industrial ovens, heat-treatment and melting furnaces and burners. The
+;; robots' physical work: the 24-hour thermal test of a furnace lining (does
+;; the steel casing stay within its temperature at 1000 C), and the burner's
+;; gas-supply train on the test stand.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-2815"
+ :cases
+ [{:id :lining-casing-thermal-test
+   :kind :thermal
+   :procedure "24 h thermal test at 1000 C: heat flows through the ceramic-fibre lining to the steel casing, which loses it to 25 C shop air"
+   :params {:conductivity-w-mk 0.10 :density-kg-m3 128.0 :specific-heat-j-kgk 1100.0
+            :t0-c 25.0 :t-hot-c 1000.0 :h-front-w-m2k 50.0 :t-back-ambient-c 25.0 :h-back-w-m2k 10.0
+            :threshold-c 80.0 :duration-s 86400.0 :nodes 7}
+   :sweep {:param :thickness-m :values [0.075 0.10 0.15 0.20 0.25]}
+   :quantity :peak-back-c
+   :limit {:max 80.0 :basis "estimate: casing temperature a furnace builder designs to; the fibre's mean conductivity 0.10 W/mK and the casing-side h are estimates"}
+   :boundary {:lo 0.05 :hi 0.35}}
+  {:id :burner-gas-train
+   :kind :pipe-flow
+   :procedure "natural gas flows to the burner under test through 20 m of DN50 supply pipe on the test stand (gas density 0.75 kg/m3, viscosity 1.1e-5 Pa.s)"
+   :params {:diameter-m 0.0525 :length-m 20.0 :roughness-m 4.5e-5
+            :density-kg-m3 0.75 :viscosity-pa-s 1.1e-5 :pump-efficiency 0.65 :elevation-m 0.0}
+   :sweep {:param :q-m3s :values [0.005 0.01 0.02 0.03 0.04]}
+   :quantity :pressure-drop-pa
+   :limit {:max 200.0 :basis "estimate: 2 mbar of the supply pressure budget allowed for the test stand's pipe run ahead of the burner's pressure regulator"}
+   :boundary {:lo 0.001 :hi 0.08}}]}
